@@ -6,6 +6,5 @@ func main() {
 	oatcoin.Register(
 		oatcoin.NewWalletCmd(),
 	)
-
 	oatcoin.Execute()
 }
