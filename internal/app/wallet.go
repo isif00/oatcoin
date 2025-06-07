@@ -16,3 +16,11 @@ func NewWalletApp(store storage.WalletStore) *WalletApp {
 func (wa *WalletApp) CreateWallet() (string, error) {
 	return wallet.CreateWallet(wa.store)
 }
+
+func (wa *WalletApp) LoadWallet(address string) (storage.WalletData, error) {
+	return wallet.LoadWallet(address, wa.store)
+}
+
+func (wa *WalletApp) ListWallets() ([]storage.WalletData, error) {
+	return wallet.ListWallets(wa.store)
+}

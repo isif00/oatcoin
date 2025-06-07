@@ -4,11 +4,10 @@
 * Address generation (compressed pubkey + hashing + Base58Check) ✅
 * Signing transactions 
 * Verifying signatures
-* Secure storage (encrypted files, OS keystore)
+* Local storage ✅
 * Wallet management (list, load, save, backup)
 * Recovery mechanism (mnemonics / seeds)
-* Unit and integration tests
-
+* Unit and integration tests 
 ---
 
 ### 2. **Transactions & UTXO**

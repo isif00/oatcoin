@@ -32,5 +32,4 @@ func (w *Wallet) Address() string {
 	address := crypto.Base58CheckEncode(versionedPayload)
 
 	return address
-
 }

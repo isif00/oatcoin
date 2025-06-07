@@ -24,3 +24,12 @@ func CreateWallet(store storage.WalletStore) (string, error) {
 	}
 	return a, nil
 }
+
+func LoadWallet(address string, store storage.WalletStore) (storage.WalletData, error) {
+	return store.LoadWallet(address)
+
+}
+
+func ListWallets(store storage.WalletStore) ([]storage.WalletData, error) {
+	return store.ListWallets()
+}

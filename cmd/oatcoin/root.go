@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 Oatcoin is a v0.1 Bitcoin reimplementation.
 
 Available commands include:
-  🧠 Wallet      🔗 Transactions     ⛏ Mining
+  💳 Wallet      🔗 Transactions     ⛏ Mining
   📦 Blocks      📡 P2P Network      🔧 Dev Tools
 	`,
 	Run: func(cmd *cobra.Command, args []string) {

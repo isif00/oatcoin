@@ -3,6 +3,7 @@ package filesystem
 import (
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type FileSystem struct {
@@ -46,4 +47,19 @@ func (fs *FileSystem) ListDirs() ([]string, error) {
 		}
 	}
 	return dirs, nil
+}
+
+func (f *FileSystem) ListFiles(folder string) ([]string, error) {
+	fullPath := filepath.Join(f.BasePath, folder)
+	entries, err := os.ReadDir(fullPath)
+	if err != nil {
+		return nil, err
+	}
+	var files []string
+	for _, e := range entries {
+		if !e.IsDir() && strings.HasSuffix(e.Name(), ".json") {
+			files = append(files, strings.TrimSuffix(e.Name(), ".json"))
+		}
+	}
+	return files, nil
 }

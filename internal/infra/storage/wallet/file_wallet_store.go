@@ -39,13 +39,13 @@ func (s *FileWalletStore) LoadWallet(address string) (WalletData, error) {
 }
 
 func (s *FileWalletStore) ListWallets() ([]WalletData, error) {
-	dirs, err := s.fs.ListDirs()
+	files, err := s.fs.ListFiles(s.folder)
 	if err != nil {
 		return nil, err
 	}
 
 	var wallets []WalletData
-	for _, addr := range dirs {
+	for _, addr := range files {
 		wallet, err := s.LoadWallet(addr)
 		if err == nil {
 			wallets = append(wallets, wallet)
