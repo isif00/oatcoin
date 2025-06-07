@@ -10,7 +10,12 @@ func NewWalletCmd() *cobra.Command {
 		Use:   "newaddress",
 		Short: "🔐 Generate a new wallet address",
 		Run: func(cmd *cobra.Command, args []string) {
-			color.Green("New address: %s", "oat1qxyz...")
+			walletAddress, err := walletApp.CreateWallet()
+			if err != nil {
+				color.Red("Failed to generate wallet: %v", err)
+				return
+			}
+			color.Yellow("Wallet Created Successfully: %s", color.GreenString(walletAddress))
 		},
 	}
 	return cmd
