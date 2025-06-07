@@ -5,9 +5,9 @@
 * Signing transactions 
 * Verifying signatures
 * Local storage ✅
-* Wallet management (list, load, save, backup)
+* Wallet management (list, load, save) ✅
 * Recovery mechanism (mnemonics / seeds)
-* Unit and integration tests 
+
 ---
 
 ### 2. **Transactions & UTXO**
@@ -20,7 +20,6 @@
 * Fee calculation
 * Signature verification on tx inputs
 * Mempool for unconfirmed txs
-* Tests for tx validation and UTXO correctness
 
 ---
 
@@ -34,7 +33,6 @@
 * Fork handling (longest chain rule)
 * Difficulty adjustment (future)
 * Genesis block creation
-* Tests for block validation and chain integrity
 
 ---
 
@@ -45,7 +43,6 @@
 * Coinbase transaction creation (block reward)
 * Mining loop and interrupt support
 * Validation of PoW on incoming blocks
-* Tests for mining and difficulty checks
 
 ---
 
@@ -58,7 +55,6 @@
 * Handling forks and conflicting blocks
 * Security and DoS prevention (basic rate limiting)
 * Future: encryption, handshakes, node reputation
-* Tests for message handling and sync correctness
 
 ---
 
@@ -69,7 +65,6 @@
 * UTXO set persistence (if stored separately)
 * Data corruption detection and recovery
 * Backup and restore functionality
-* Tests for data consistency and I/O correctness
 
 ---
 
@@ -81,7 +76,6 @@
 * Node control commands (startnode, stop)
 * Clear error reporting and user feedback
 * Future: REST API / Web UI
-* Tests for CLI command correctness and edge cases
 
 ---
 
@@ -92,4 +86,3 @@
 * Handling malformed / malicious input gracefully
 * Private key safety and secure random number generation
 * Code audits and reviews
-* Continuous Integration setup (optional but recommended)

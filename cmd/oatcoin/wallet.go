@@ -9,7 +9,7 @@ import (
 
 func NewWalletCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "newaddress",
+		Use:   "newwallet",
 		Short: "🔐 Generate a new wallet address",
 		Run: func(cmd *cobra.Command, args []string) {
 			walletAddress, err := walletApp.CreateWallet()
