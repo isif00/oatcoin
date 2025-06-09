@@ -25,14 +25,14 @@
 
 ### 3. **Blockchain Core**
 
-* Block structure (header + txs)
-* Chain linking via prev block hash
-* Block validation (PoW, timestamp, tx validation)
-* Maintain chain state (tip, height)
-* Persistence (flat file or DB)
+* Block structure (header + txs) ✅
+* Chain linking via prev block hash ✅
+* Block validation (PoW, timestamp, tx validation) ✅
+* Maintain chain state (tip, height) 
+* Persistence (flat file or DB) ✅
 * Fork handling (longest chain rule)
 * Difficulty adjustment (future)
-* Genesis block creation
+* Genesis block creation ✅
 
 ---
 

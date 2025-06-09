@@ -1,6 +1,8 @@
 package block
 
-import "github.com/isif00/oat-coin/internal/domain/tx"
+import (
+	"github.com/isif00/oat-coin/internal/domain/tx"
+)
 
 type Blockchain struct {
 	Blocks []*Block
@@ -13,6 +15,6 @@ func NewBlockchain() *Blockchain {
 
 func (bc *Blockchain) AddBlock(txs []*tx.Transaction) {
 	prev := bc.Blocks[len(bc.Blocks)-1]
-	newBlock := NewBlock(txs, prev.Hash)
+	newBlock := NewBlock(txs, []byte(prev.Hash))
 	bc.Blocks = append(bc.Blocks, newBlock)
 }

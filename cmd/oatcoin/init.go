@@ -5,13 +5,18 @@ import (
 
 	"github.com/isif00/oat-coin/internal/app"
 	"github.com/isif00/oat-coin/internal/infra/filesystem"
-	storage "github.com/isif00/oat-coin/internal/infra/storage/wallet"
+	blockstore "github.com/isif00/oat-coin/internal/infra/storage/block"
+	walletstore "github.com/isif00/oat-coin/internal/infra/storage/wallet"
 )
 
 var (
-	fs        *filesystem.FileSystem
-	store     *storage.FileWalletStore
+	fs *filesystem.FileSystem
+
+	walletStore *walletstore.FileWalletStore
+	blockStore  *blockstore.FileBlockStore
+
 	walletApp *app.WalletApp
+	blockApp  *app.BlockApp
 )
 
 func init() {
@@ -21,7 +26,9 @@ func init() {
 		log.Fatalf("failed to init filesystem: %v", err)
 	}
 
-	// wallet
-	store = storage.NewFileWalletStore(fs)
-	walletApp = app.NewWalletApp(store)
+	walletStore = walletstore.NewFileWalletStore(fs)
+	walletApp = app.NewWalletApp(walletStore)
+
+	blockStore = blockstore.NewFileBlockStore(fs)
+	blockApp = app.NewBlockApp(blockStore)
 }

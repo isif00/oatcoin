@@ -50,6 +50,6 @@ func (s *FileWalletStore) ListWallets() ([]WalletData, error) {
 		if err == nil {
 			wallets = append(wallets, wallet)
 		}
-	}	
+	}
 	return wallets, nil
 }

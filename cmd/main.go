@@ -7,6 +7,11 @@ func main() {
 		oatcoin.NewWalletCmd(),
 		oatcoin.LoadWalletCmd(),
 		oatcoin.ListWalletsCmd(),
+
+		oatcoin.InitChainCmd(),
+		oatcoin.MineBlockCmd(),
+		oatcoin.LatestBlockCmd(),
+		oatcoin.ListBlocksCmd(),
 	)
 	oatcoin.Execute()
 }

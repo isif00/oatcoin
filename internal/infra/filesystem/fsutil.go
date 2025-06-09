@@ -23,14 +23,16 @@ func NewFileSystem(root string) (*FileSystem, error) {
 	return &FileSystem{BasePath: fullPath}, nil
 }
 
-func (fs *FileSystem) Write(folder, file string, data []byte) error {
-	path := filepath.Join(fs.BasePath, folder)
-	if err := os.MkdirAll(path, 0700); err != nil {
-		return err
-	}
-	return os.WriteFile(filepath.Join(path, file), data, 0600)
-}
+func (fs *FileSystem) Write(folder, filename string, data []byte) error {
+    path := filepath.Join(fs.BasePath, folder)
 
+    if err := os.MkdirAll(path, os.ModePerm); err != nil {
+        return err
+    }
+
+    fullPath := filepath.Join(path, filename)
+    return os.WriteFile(fullPath, data, 0644)
+}
 func (fs *FileSystem) Read(folder, file string) ([]byte, error) {
 	return os.ReadFile(filepath.Join(fs.BasePath, folder, file))
 }
