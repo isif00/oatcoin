@@ -36,39 +36,16 @@ func (pow *ProofOfWork) Run(workers int) (int, []byte) {
 		hash  []byte
 	}
 
-	resultChan := make(chan result)
-	stopChan := make(chan struct{})
+	var hash [32]byte
+	for nonce := 0; ; nonce++ {
+		data := pow.prepareData(nonce)
+		hash = sha256.Sum256(data)
 
-	for w := range workers {
-		go func(workerID int) {
-			var hash [32]byte
-			nonce := workerID
+		var hashInt big.Int
+		hashInt.SetBytes(hash[:])
 
-			for {
-				select {
-				case <-stopChan:
-					return
-				default:
-					data := pow.prepareData(nonce)
-					hash = sha256.Sum256(data)
-
-					var hashInt big.Int
-					hashInt.SetBytes(hash[:])
-
-					if hashInt.Cmp(pow.Target) == -1 {
-						select {
-						case resultChan <- result{nonce, hash[:]}:
-						case <-stopChan:
-						}
-						return
-					}
-					nonce += workers
-				}
-			}
-		}(w)
+		if hashInt.Cmp(pow.Target) == -1 {
+			return nonce, hash[:]
+		}
 	}
-
-	found := <-resultChan
-	close(stopChan)
-	return found.nonce, found.hash
 }

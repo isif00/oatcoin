@@ -2,6 +2,8 @@ package storage
 
 import (
 	"encoding/json"
+	"os"
+	"path/filepath"
 
 	"github.com/isif00/oat-coin/internal/infra/filesystem"
 )
@@ -11,11 +13,18 @@ type FileWalletStore struct {
 	folder string
 }
 
-func NewFileWalletStore(fs *filesystem.FileSystem) *FileWalletStore {
-	return &FileWalletStore{
+func NewFileWalletStore(fs *filesystem.FileSystem) (*FileWalletStore, error) {
+	store := &FileWalletStore{
 		fs:     fs,
 		folder: "wallets",
 	}
+
+	dirPath := filepath.Join(fs.BasePath, "wallets")
+	if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
+		return nil, err
+	}
+
+	return store, nil
 }
 
 func (s *FileWalletStore) SaveWallet(wallet WalletData) error {

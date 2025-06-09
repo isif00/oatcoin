@@ -26,9 +26,16 @@ func init() {
 		log.Fatalf("failed to init filesystem: %v", err)
 	}
 
-	walletStore = walletstore.NewFileWalletStore(fs)
+	walletStore, err = walletstore.NewFileWalletStore(fs)
+	if err != nil {
+		log.Fatalf("failed to init wallet store: %v", err)
+	}
 	walletApp = app.NewWalletApp(walletStore)
 
-	blockStore = blockstore.NewFileBlockStore(fs)
+	blockStore, err = blockstore.NewFileBlockStore(fs)
+	if err != nil {
+		log.Fatalf("failed to init block store: %v", err)
+	}
+
 	blockApp = app.NewBlockApp(blockStore)
 }

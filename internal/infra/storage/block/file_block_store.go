@@ -13,15 +13,18 @@ type FileBlockStore struct {
 	folder string
 }
 
-func NewFileBlockStore(fs *filesystem.FileSystem) *FileBlockStore {
+func NewFileBlockStore(fs *filesystem.FileSystem) (*FileBlockStore, error) {
 	store := &FileBlockStore{
 		fs:     fs,
 		folder: "blocks",
 	}
 
-	_ = os.MkdirAll(filepath.Join(fs.BasePath, "blocks"), os.ModePerm)
+	dirPath := filepath.Join(fs.BasePath, "blocks")
+	if err := os.MkdirAll(dirPath, os.ModePerm); err != nil {
+		return nil, err
+	}
 
-	return store
+	return store, nil
 }
 
 func (s *FileBlockStore) SaveBlock(b BlockData) error {
@@ -30,7 +33,11 @@ func (s *FileBlockStore) SaveBlock(b BlockData) error {
 		return err
 	}
 	filename := b.Hash + ".json"
-	return s.fs.Write(s.folder, filename, data)
+	err = s.fs.Write(s.folder, filename, data)
+	if err != nil {
+		return err
+	}
+	return err
 }
 
 func (s *FileBlockStore) LoadBlock(hash string) (BlockData, error) {
@@ -38,8 +45,12 @@ func (s *FileBlockStore) LoadBlock(hash string) (BlockData, error) {
 	if err != nil {
 		return BlockData{}, err
 	}
+
 	var bd BlockData
 	err = json.Unmarshal(data, &bd)
+	if err != nil {
+		return BlockData{}, err
+	}
 	return bd, err
 }
 
@@ -50,9 +61,9 @@ func (s *FileBlockStore) LoadAllBlocks() ([]BlockData, error) {
 	}
 	var blocks []BlockData
 	for _, name := range names {
-		blk, err := s.LoadBlock(name[:len(name)-5])
+		blk, err := s.LoadBlock(name)
 		if err != nil {
-			continue
+			return nil, err
 		}
 		blocks = append(blocks, blk)
 	}
