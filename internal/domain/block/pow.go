@@ -30,21 +30,12 @@ func (pow *ProofOfWork) prepareData(nonce int) []byte {
 		[]byte{},
 	)
 }
-func (pow *ProofOfWork) Run(workers int) (int, []byte) {
-	type result struct {
-		nonce int
-		hash  []byte
-	}
-
-	var hash [32]byte
+func (pow *ProofOfWork) Run() (int, []byte) {
 	for nonce := 0; ; nonce++ {
 		data := pow.prepareData(nonce)
-		hash = sha256.Sum256(data)
+		hash := sha256.Sum256(data)
 
-		var hashInt big.Int
-		hashInt.SetBytes(hash[:])
-
-		if hashInt.Cmp(pow.Target) == -1 {
+		if new(big.Int).SetBytes(hash[:]).Cmp(pow.Target) < 0 {
 			return nonce, hash[:]
 		}
 	}

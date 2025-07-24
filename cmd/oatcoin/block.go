@@ -2,6 +2,7 @@ package oatcoin
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -10,12 +11,12 @@ import (
 	"github.com/isif00/oat-coin/internal/domain/tx"
 )
 
-func InitChainCmd() *cobra.Command {
+func InitChainCmd(blockApp *app.BlockApp) *cobra.Command {
 	return &cobra.Command{
 		Use:   "initchain",
 		Short: "🚀 Initialize the blockchain with a genesis block",
 		Run: func(cmd *cobra.Command, args []string) {
-			blocks, err := app.InitializeBlockchain(blockStore)
+			blocks, err := blockApp.InitializeBlockchain()
 			if err != nil {
 				color.Red("❌ Failed to initialize blockchain: %v", err)
 				return
@@ -25,17 +26,17 @@ func InitChainCmd() *cobra.Command {
 	}
 }
 
-func MineBlockCmd() *cobra.Command {
+func MineBlockCmd(blockApp *app.BlockApp) *cobra.Command {
 	return &cobra.Command{
 		Use:   "mineblock",
 		Short: "⛏️  Mine a new block with dummy transactions",
 		Run: func(cmd *cobra.Command, args []string) {
 			txs := []*tx.Transaction{
 				{
-					ID: "0x1234",
+					ID: []byte("0x1234"),
 					Inputs: []tx.TxInput{
 						{
-							TxID:      "0x1234",
+							TxID:      []byte("0x1234"),
 							OutputIdx: 0,
 							Signature: []byte("signature"),
 							PubKey:    []byte("public key"),
@@ -49,41 +50,41 @@ func MineBlockCmd() *cobra.Command {
 					},
 				},
 			}
-			block, err := app.MineBlock(blockStore, txs)
+			block, err := blockApp.MineBlock(txs)
 			if err != nil {
 				color.Red("❌ Failed to mine block: %v", err)
 				return
 			}
 			color.Green("✅ Block mined successfully!")
-			fmt.Printf("🔗 Hash: %s\n", color.YellowString(string(block.Hash)))
+			fmt.Printf("🔗 Hash: %s\n", color.YellowString(block.HashHex()))
 		},
 	}
 }
 
-func LatestBlockCmd() *cobra.Command {
+func LatestBlockCmd(blockApp *app.BlockApp) *cobra.Command {
 	return &cobra.Command{
 		Use:   "latestblock",
 		Short: "📦 Fetch the latest block",
 		Run: func(cmd *cobra.Command, args []string) {
-			block, err := app.GetLatestBlock(blockStore)
+			block, err := blockApp.GetLatestBlock()
 			if err != nil {
 				color.Red("❌ Failed to fetch latest block: %v", err)
 				return
 			}
 			color.Cyan("🧱 Latest Block:")
 			fmt.Printf("🔗 Hash: %s\n", block.Hash)
-			fmt.Printf("⏱️  Time: %d\n", block.Timestamp)
+			fmt.Printf("⏱️ Time: %s\n", time.Unix(block.Timestamp, 0).Format("2006-01-02 15:04:05 MST"))
 			fmt.Printf("📦 Tx Count: %d\n", len(block.Transactions))
 		},
 	}
 }
 
-func ListBlocksCmd() *cobra.Command {
+func ListBlocksCmd(blockApp *app.BlockApp) *cobra.Command {
 	return &cobra.Command{
 		Use:   "listblocks",
 		Short: "📚 List all blocks in the blockchain",
 		Run: func(cmd *cobra.Command, args []string) {
-			blocks, err := app.GetAllBlocks(blockStore)
+			blocks, err := blockApp.GetAllBlocks()
 			if err != nil {
 				color.Red("❌ Failed to list blocks: %v", err)
 				return

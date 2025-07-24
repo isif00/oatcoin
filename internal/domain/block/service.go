@@ -45,7 +45,6 @@ func MineBlock(store storage.BlockStore, txs []*tx.Transaction) (*Block, error) 
 	if err := store.SaveBlock(storageBlock); err != nil {
 		return nil, err
 	}
-
 	return newBlock, nil
 }
 

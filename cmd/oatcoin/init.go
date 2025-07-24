@@ -1,7 +1,7 @@
 package oatcoin
 
 import (
-	"log"
+	"fmt"
 
 	"github.com/isif00/oat-coin/internal/app"
 	"github.com/isif00/oat-coin/internal/infra/filesystem"
@@ -9,33 +9,29 @@ import (
 	walletstore "github.com/isif00/oat-coin/internal/infra/storage/wallet"
 )
 
-var (
-	fs *filesystem.FileSystem
+type OatCoin struct {
+	WalletApp *app.WalletApp
+	BlockApp  *app.BlockApp
+}
 
-	walletStore *walletstore.FileWalletStore
-	blockStore  *blockstore.FileBlockStore
-
-	walletApp *app.WalletApp
-	blockApp  *app.BlockApp
-)
-
-func init() {
-	var err error
-	fs, err = filesystem.NewFileSystem(".oatcoin")
+func NewOatCoin(dataDir string) (*OatCoin, error) {
+	fs, err := filesystem.NewFileSystem(dataDir)
 	if err != nil {
-		log.Fatalf("failed to init filesystem: %v", err)
+		return nil, fmt.Errorf("failed to init filesystem: %w", err)
 	}
 
-	walletStore, err = walletstore.NewFileWalletStore(fs)
+	walletStore, err := walletstore.NewFileWalletStore(fs)
 	if err != nil {
-		log.Fatalf("failed to init wallet store: %v", err)
-	}
-	walletApp = app.NewWalletApp(walletStore)
-
-	blockStore, err = blockstore.NewFileBlockStore(fs)
-	if err != nil {
-		log.Fatalf("failed to init block store: %v", err)
+		return nil, fmt.Errorf("failed to init wallet store: %w", err)
 	}
 
-	blockApp = app.NewBlockApp(blockStore)
+	blockStore, err := blockstore.NewFileBlockStore(fs)
+	if err != nil {
+		return nil, fmt.Errorf("failed to init block store: %w", err)
+	}
+
+	return &OatCoin{
+		WalletApp: app.NewWalletApp(walletStore),
+		BlockApp:  app.NewBlockApp(blockStore),
+	}, nil
 }

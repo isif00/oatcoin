@@ -2,8 +2,8 @@
 
 * Keypair generation (ECDSA, secp256k1) ✅
 * Address generation (compressed pubkey + hashing + Base58Check) ✅
-* Signing transactions 
-* Verifying signatures
+* Signing transactions ✅
+* Verifying signatures ✅
 * Local storage ✅
 * Wallet management (list, load, save) ✅
 * Recovery mechanism (mnemonics / seeds)
@@ -12,9 +12,9 @@
 
 ### 2. **Transactions & UTXO**
 
-* Create and validate transactions
-* Implement UTXO set tracking
-* Transaction inputs referencing UTXOs
+* Create and validate transactions ✅
+* Implement UTXO set tracking ✅
+* Transaction inputs referencing UTXOs ✅
 * Outputs creating new UTXOs
 * Double-spend prevention
 * Fee calculation
@@ -60,7 +60,7 @@
 
 ### 6. **Storage**
 
-* Flat file storage for blocks (like blk\*.dat)
+* Flat file storage for blocks (json) ✅
 * Indexing for fast lookup (block height, hashes)
 * UTXO set persistence (if stored separately)
 * Data corruption detection and recovery
@@ -70,7 +70,7 @@
 
 ### 7. **CLI & User Interface**
 
-* Wallet creation and management commands
+* Wallet creation and management commands ✅
 * Sending transactions and querying balance
 * Viewing blockchain info (printchain)
 * Node control commands (startnode, stop)

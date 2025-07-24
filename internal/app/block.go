@@ -14,18 +14,18 @@ func NewBlockApp(store storage.BlockStore) *BlockApp {
 	return &BlockApp{store: store}
 }
 
-func InitializeBlockchain(store storage.BlockStore) ([]*block.Block, error) {
-	return block.InitializeBlockchain(store)
+func (b *BlockApp) InitializeBlockchain() ([]*block.Block, error) {
+	return block.InitializeBlockchain(b.store)
 }
 
-func MineBlock(store storage.BlockStore, txs []*tx.Transaction) (*block.Block, error) {
-	return block.MineBlock(store, txs)
+func (b *BlockApp) MineBlock(txs []*tx.Transaction) (*block.Block, error) {
+	return block.MineBlock(b.store, txs)
 }
 
-func GetLatestBlock(store storage.BlockStore) (*block.Block, error) {
-	return block.GetLatestBlock(store)
+func (b *BlockApp) GetLatestBlock() (*block.Block, error) {
+	return block.GetLatestBlock(b.store)
 }
 
-func GetAllBlocks(store storage.BlockStore) ([]*block.Block, error) {
-	return block.GetAllBlocks(store)
+func (b *BlockApp) GetAllBlocks() ([]*block.Block, error) {
+	return block.GetAllBlocks(b.store)
 }

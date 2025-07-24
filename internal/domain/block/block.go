@@ -2,7 +2,6 @@ package block
 
 import (
 	"encoding/hex"
-	"runtime"
 	"time"
 
 	"github.com/isif00/oat-coin/internal/domain/tx"
@@ -25,7 +24,7 @@ func NewBlock(txs []*tx.Transaction, prevHash []byte) *Block {
 		Hash:         []byte{},
 	}
 	pow := NewProofOfWork(block)
-	nonce, hash := pow.Run(runtime.NumCPU())
+	nonce, hash := pow.Run()
 	block.Hash = hash[:]
 	block.Nonce = nonce
 	return block
@@ -48,8 +47,11 @@ func (b *Block) ToStorage() block.BlockData {
 func BlockDataToDomain(bd block.BlockData) *Block {
 	txHashes := make([]*tx.Transaction, len(bd.Transactions))
 	for i, id := range bd.Transactions {
-		id, _ := hex.DecodeString(id)
-		txHashes[i] = &tx.Transaction{ID: hex.EncodeToString(id)}
+		id, err := hex.DecodeString(id)
+		if err != nil {
+			panic(err)
+		}
+		txHashes[i] = &tx.Transaction{ID: id}
 	}
 	return &Block{
 		Hash:         []byte(bd.Hash),
@@ -64,7 +66,7 @@ func ToDomain(bd block.BlockData) *Block {
 	txList := make([]*tx.Transaction, len(bd.Transactions))
 	for i, id := range bd.Transactions {
 		txList[i] = &tx.Transaction{
-			ID: id,
+			ID: []byte(id),
 		}
 	}
 
@@ -75,4 +77,8 @@ func ToDomain(bd block.BlockData) *Block {
 		Nonce:        bd.Nonce,
 		Transactions: txList,
 	}
+}
+
+func (b *Block) HashHex() string {
+	return hex.EncodeToString(b.Hash)
 }

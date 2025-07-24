@@ -4,10 +4,11 @@ import (
 	"fmt"
 
 	"github.com/fatih/color"
+	"github.com/isif00/oat-coin/internal/app"
 	"github.com/spf13/cobra"
 )
 
-func NewWalletCmd() *cobra.Command {
+func NewWalletCmd(walletApp *app.WalletApp) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "newwallet",
 		Short: "🔐 Generate a new wallet address",
@@ -23,7 +24,7 @@ func NewWalletCmd() *cobra.Command {
 	return cmd
 }
 
-func LoadWalletCmd() *cobra.Command {
+func LoadWalletCmd(walletApp *app.WalletApp) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "loadwallet [address]",
 		Short: "🔐 Load an existing wallet",
@@ -46,7 +47,7 @@ func LoadWalletCmd() *cobra.Command {
 	return cmd
 }
 
-func ListWalletsCmd() *cobra.Command {
+func ListWalletsCmd(walletApp *app.WalletApp) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "listwallets",
 		Short: "🔐 List all existing wallets",
